@@ -1,20 +1,36 @@
 /**
  * Created by Agnieszka on 21.02.2017.
  */
+var path = require('path');
+var webpack = require('webpack');
+
+var commonsPlugin = new webpack.optimize.CommonsChunkPlugin('shared.js');
+
 module.exports = {
-    entry: ["./utils.js", "./app.js"],
+    context: path.resolve('js'),
+    entry: {
+        about: './about_page.js',
+        home: './home_page.js',
+        contact: './contact_page.js'
+    },
     output: {
-        filename: "bundle.js"
+        path: path.resolve('build/js/'),
+        publicPath: '/public/assets/js/',
+        filename: "[name].js"
+    },
+    plugins: [commonsPlugin],
+    devServer: {
+        contentBase: 'public'
     },
     module: {
-        rules: [
-            {
-                enforce:'pre',
-                test: /\.js$/,
-                exclude: 'node_modules',
-                loader: 'jshint-loader'
-            }
-        ],
+        // rules: [
+        //     {
+        //         enforce: 'pre',
+        //         test: /\.js$/,
+        //         exclude: 'node_modules',
+        //         loader: 'jshint-loader'
+        //     }
+        // ],
         loaders: [
             {
                 test: /\.es6$/,
@@ -26,4 +42,4 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.es6']
     }
-}
+};
